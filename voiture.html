@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VROOOOOOOOOOUM</title>
+    <style>
+        #car {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .obstacle {
+            position: absolute;
+        }
+    </style>
+    <style>
+        body {
+            background-image: url("squid.jpg");
+            background-size: cover;
+        }
+    </style>
+    
+</head>
+<body>
+    <h1>VROOOOOOOOOOUM</h1>
+    <style>
+        h1 {
+            color: white;
+        }
+    </style>
+    
+    <div id="car">
+        <img src="mcqueen.png" width="190" height="100" alt="Voiture">
+    </div>
+
+    <!-- Ajout du bouton de lecture -->
+    <button onclick="playMusic()">Play Music</button>
+
+    <!-- Ajout de l'élément audio -->
+    <audio id="music" src="not.mp3"></audio>
+
+    <script>
+        var car = document.getElementById("car");
+        var currentPositionX = 0;
+        var currentPositionY = 0;
+        var step = 10;
+
+        document.addEventListener("keydown", moveCar);
+
+        function moveCar(event) {
+            var key = event.key;
+
+            if (key === "ArrowLeft" || key === "ArrowRight") {
+                moveHorizontally(key);
+            } else if (key === "ArrowUp" || key === "ArrowDown") {
+                moveVertically(key);
+            }
+            
+            checkCollision();
+        }
+
+        function moveHorizontally(key) {
+            var currentLeft = parseInt(car.style.left) || 50;
+
+            if (key === "ArrowLeft") {
+                currentLeft -= step;
+            } else if (key === "ArrowRight") {
+                currentLeft += step;
+            }
+
+            car.style.left = currentLeft + "%";
+        }
+
+        function moveVertically(key) {
+            var currentBottom = parseInt(car.style.bottom) || 0;
+
+            if (key === "ArrowUp") {
+                currentBottom += step;
+            } else if (key === "ArrowDown") {
+                currentBottom -= step;
+            }
+
+            car.style.bottom = currentBottom + "px";
+        }
+
+        function createObstacle() {
+            var obstacle = document.createElement("img");
+            obstacle.className = "obstacle";
+            obstacle.src = "lorenzo.png";
+            obstacle.width = 90;
+            obstacle.height = 190;
+            obstacle.style.left = getRandomPosition() + "px";
+            obstacle.style.bottom = getRandomPosition() + "px";
+            document.body.appendChild(obstacle);
+        }
+
+        function getRandomPosition() {
+            var maxWidth = window.innerWidth - 40;
+            return Math.floor(Math.random() * maxWidth);
+        }
+
+        setInterval(createObstacle, 2000);
+        
+        createObstacles(); // Appel de la fonction createObstacles
+        
+        function createObstacles() {
+            var obstacleCount = 5; // Nombre d'obstacles à afficher
+
+            for (var i = 0; i < obstacleCount; i++) {
+                var obstacle = document.createElement("img");
+                obstacle.className = "obstacle";
+                obstacle.src = "yeniq.png";
+                obstacle.width = 90;
+                obstacle.height = 170;
+                obstacle.style.left = getRandomPosition() + "px";
+                obstacle.style.bottom = getRandomPosition() + "px";
+                document.body.appendChild(obstacle);
+            }
+        }
+
+        function checkCollision() {
+            var obstacles = document.getElementsByClassName("obstacle");
+            var carRect = car.getBoundingClientRect();
+
+            for (var i = 0; i < obstacles.length; i++) {
+                var obstacleRect = obstacles[i].getBoundingClientRect();
+
+                if (
+                    carRect.left < obstacleRect.right &&
+                    carRect.right > obstacleRect.left &&
+                    carRect.top < obstacleRect.bottom &&
+                    carRect.bottom > obstacleRect.top
+                ) {
+                    // Collision détectée !
+                    // Vous pouvez ajouter ici la logique que vous souhaitez exécuter en cas de collision.
+                    // Par exemple, afficher un message de fin de jeu, réinitialiser la position de la voiture, etc.
+                }
+            }
+        }
+        
+        function playMusic() {
+            var music = document.getElementById("music");
+            music.play();
+        }
+    </script>
+</body>
+</html>
+
